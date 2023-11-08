@@ -1,0 +1,31 @@
+Notion API
+https://developers.notion.com/
+https://www.ibm.com/topics/api?
+https://github.com/ramnes/notion-sdk-py
+
+Developing
+https://www.youtube.com/watch?v=M1gu9MDucMA&ab_channel=PatrickLoeber
+https://www.youtube.com/watch?v=ec5m6t77eYM&ab_channel=ThomasFrankExplains
+https://www.youtube.com/watch?v=KyllgpvQFuI&list=PLS_o2ayVCKvDwzhB-wdzBTvpQwgArrHlY&ab_channel=IndyDevDan
+
+https://www.notion.so/Webscraping-4dfc0aea559547938dfe1d62daa0801d
+https://nwatchlist.notion.site/nwatchlist/Hello-there-00e5ce7685794744af0b6198d2147ae3
+
+My Media Bot
+- Data Retrieval
+- Data Organization
+- Notion Integration
+- Automated Syncing
+- Open to Community?
+- User Interface?
+- Notifications 
+
+Meta Data
+- Title~
+- Type~
+- Satus
+- Rating
+- Chapters/Episode~
+- Current
+- Cover Image~
+- Link~
