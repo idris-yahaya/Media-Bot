@@ -48,3 +48,11 @@ New Knowledge
 - Git & Github practice
 - Virtual Environments
 - API's, .env files
+
+
+
+python -m venv venv
+.\venv\Scripts\activate
+pip install package_name
+pip freeze > requirements.txt
+deactivate
