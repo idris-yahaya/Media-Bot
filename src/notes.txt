@@ -1,0 +1,58 @@
+Notion API -----------------------------------------------------
+https://developers.notion.com/
+https://www.ibm.com/topics/api?
+https://www.notion.so/my-integrations
+
+
+Developing ------------------------------------------------------
+
+Notion Tutorials & Examples
+https://www.youtube.com/watch?v=M1gu9MDucMA&ab_channel=PatrickLoeber
+https://www.youtube.com/watch?v=ec5m6t77eYM&ab_channel=ThomasFrankExplains
+https://www.youtube.com/watch?v=KyllgpvQFuI&list=PLS_o2ayVCKvDwzhB-wdzBTvpQwgArrHlY&ab_channel=IndyDevDan
+https://nwatchlist.notion.site/nwatchlist/Hello-there-00e5ce7685794744af0b6198d2147ae3
+https://github.com/ramnes/notion-sdk-py
+
+Webscraping
+https://www.notion.so/Webscraping-4dfc0aea559547938dfe1d62daa0801d
+
+Virtual Environments & Hiding API Keys With .env
+https://www.youtube.com/watch?v=KxvKCSwlUv8&ab_channel=teclado
+https://www.youtube.com/watch?v=CJjSOzb0IYs
+
+Feature Planning -----------------------------------------------
+My Media Bot
+- Data Retrieval
+- Data Organization
+- Notion Integration
+- Automated Syncing
+- Open to Community?
+- User Interface?
+- Notifications 
+
+Meta Data
+- Title~
+- Type~
+- Satus
+- Rating
+- Chapters/Episode~
+- Current
+- Cover Image~
+- Link~
+
+What I've Learned ----------------------------------------------
+Background
+- First time individually developing a project that works with API & a VCS
+
+New Knowledge 
+- Git & Github practice
+- Virtual Environments
+- API's, .env files
+
+
+
+python -m venv venv
+.\venv\Scripts\activate
+pip install package_name
+pip freeze > requirements.txt
+deactivate
