@@ -56,3 +56,6 @@ python -m venv venv
 pip install package_name
 pip freeze > requirements.txt
 deactivate
+
+https://www.youtube.com/watch?v=QmKdodJU-js&ab_channel=CarmelleCodes
+https://www.youtube.com/watch?v=HosPml1qkrg&ab_channel=VisualStudioCode
