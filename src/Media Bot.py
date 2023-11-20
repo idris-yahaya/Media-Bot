@@ -1,97 +1,95 @@
-import requests
 from dotenv import load_dotenv
+import requests
+import json
 import os
-from datetime import datetime, timezone
 
-load_dotenv()
-NOTION_TOKEN = os.getenv('NOTION_KEY')
-DATABASE_ID = os.getenv('NOTION_PAGE_ID')
+#Constants
+TOKEN_INDEX = 0
+DB_ID_INDEX = 1
+HEADERS_INDEX = 2
 
-headers = {
-    "Authorization": "Bearer " + NOTION_TOKEN,
-    "Content-Type": "application/json",
-    "Notion-Version": "2022-06-28",
-}
+# Load environment variables and configure Notion API settings.
+def configure():
+    load_dotenv()
+    token = os.getenv('NOTION_KEY')
+    db_id = os.getenv('NOTION_DATABASE_ID')
 
-def create_page(data: dict):
-    create_url = "https://api.notion.com/v1/pages"
+    headers = {
+        "Authorization": "Bearer " + token,
+        "Content-Type": "application/json",
+        "Notion-Version": "2023-11-18",
+    }
 
-    payload = {"parent": {"database_id": DATABASE_ID}, "properties": data}
+    return [token, db_id, headers]
 
-    res = requests.post(create_url, headers=headers, json=payload)
-    print(res.status_code)
-    return res
 
-def get_pages(num_pages=None):
-    """
-    If num_pages is None, get all pages, otherwise just the defined number.
-    """
-    url = f"https://api.notion.com/v1/databases/{DATABASE_ID}/query"
-
+# Retrieve pages from the Notion database.
+def get_pages(configs: list, num_pages=None, export=False):
+    url = f"https://api.notion.com/v1/databases/{configs[DB_ID_INDEX]}/query"
     get_all = num_pages is None
     page_size = 100 if get_all else num_pages
 
     payload = {"page_size": page_size}
-    response = requests.post(url, headers=headers, json=payload)
+    results = requests.post(url, headers=configs[HEADERS_INDEX], json=payload)
+    
+    data = results.json()
+    pages = data["results"]
 
-    data = response.json()
-
-    # Comment this out to dump all data to a file
-    # import json
-    # with open('db.json', 'w', encoding='utf8') as f:
-    #    json.dump(data, f, ensure_ascii=False, indent=4)
-
-    results = data["results"]
     while data["has_more"] and get_all:
         payload = {"page_size": page_size, "start_cursor": data["next_cursor"]}
-        url = f"https://api.notion.com/v1/databases/{DATABASE_ID}/query"
-        response = requests.post(url, json=payload, headers=headers)
-        data = response.json()
-        results.extend(data["results"])
+        results = requests.post(url, headers=configs[HEADERS_INDEX], json=payload)
+        data = results.json()
+        pages.extend(data["results"])
+    
+    if export:
+        with open('db.json', 'w', encoding='utf8') as f:
+            json.dump(pages, f, ensure_ascii=False, indent=4)
 
+    print(f"Request Status Code: {results.status_code}")
+    return pages
+
+
+# Create a page in the Notion database.
+def create_page(configs: list, data: dict):
+    create_url = "https://api.notion.com/v1/pages"
+    payload = {"parent": {"database_id": configs[DB_ID_INDEX]}, "properties": data}
+
+    results = requests.post(create_url, headers=configs[HEADERS_INDEX], json=payload)
+    print(results.status_code)
     return results
 
-pages = get_pages()
 
-for page in pages:
-    page_id = page["id"]
-    props = page["properties"]
-    url = props["URL"]["title"][0]["text"]["content"]
-    title = props["Title"]["rich_text"][0]["text"]["content"]
-    published = props["Published"]["date"]["start"]
-    published = datetime.fromisoformat(published)
+# Update a page in the Notion database.
+def update_page(configs: list, page_id: str, data: dict):
+    url = f"https://api.notion.com/v1/pages/{page_id}"
+    payload = {"properties": data}
 
-    print(published)
+    results = requests.patch(url, headers=configs[HEADERS_INDEX], json=payload)
+    print(f"Request Status Code: {results.status_code}")
+    return results
 
 
-title = "Test Title"
-description = "Test Description"
-published_date = datetime.now().astimezone(timezone.utc).isoformat()
-data = {
-    "URL": {"title": [{"text": {"content": description}}]},
-    "Title": {"rich_text": [{"text": {"content": title}}]},
-    "Published": {"date": {"start": published_date, "end": None}}
-}
+# Delete a page from the Notion database.
+def delete_page(configs: list, page_id: str):
+    url = f"https://api.notion.com/v1/pages/{page_id}"
+    payload = {"archived": True}
 
-create_page(data)
+    results = requests.patch(url, headers=configs[HEADERS_INDEX], json=payload)
+    print(f"Request Status Code: {results.status_code}")
+    return results
 
-"""def configure():
-    load_dotenv()
 
-def main():
-    configure()
-    os.getenv('api_key')
+if __name__ == "__main__":
+    configs = configure()
 
-NOTION_TOKEN = ""
-DATABASE_ID = "YOUR_DATABASE_ID"
-
-headers = {
-    "Authorization": "Bearer " + NOTION_TOKEN,
-    "Content-Type": "application/json",
-    "Notion-Version": "2023-11-07",
-}
-
-main()
-print("IT WORKED")
-print(os.getenv('NOTION_KEY'))
-print(os.getenv('NOTION_PAGE_ID'))"""
+    # Meta Data
+    """
+        - Title~
+        - Type~
+        - Satus
+        - Rating
+        - Chapters/Episode~
+        - Current
+        - Cover Image~
+        - Link~
+    """
